@@ -1,4 +1,3 @@
-<!-- This README explains how to build, run, inspect, and publish the full-stack Docker Compose application. -->
 # Session 4: Full-Stack Docker Compose
 
 ## Goal
