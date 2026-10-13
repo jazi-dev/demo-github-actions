@@ -1,0 +1,4 @@
+# This file excludes Python caches and local virtual environments from the backend Docker build context.
+__pycache__
+*.pyc
+.venv

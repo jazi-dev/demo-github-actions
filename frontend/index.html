@@ -1,0 +1,67 @@
+<!-- This page provides the task-list interface and calls the backend API to load and add tasks. -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Docker Tasks</title>
+    <style>
+      body {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 0 20px;
+        font-family: Arial, sans-serif;
+      }
+      form {
+        display: flex;
+        gap: 8px;
+      }
+      input {
+        flex: 1;
+        padding: 10px;
+      }
+      button {
+        padding: 10px 16px;
+        cursor: pointer;
+      }
+      li {
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Docker Tasks</h1>
+
+    <form id="task-form">
+      <input id="title" placeholder="Enter a task" required />
+      <button type="submit">Add</button>
+    </form>
+
+    <ul id="tasks"></ul>
+
+    <script>
+      const form = document.querySelector("#task-form");
+      const title = document.querySelector("#title");
+      const list = document.querySelector("#tasks");
+
+      async function loadTasks() {
+        const response = await fetch("/api/tasks");
+        const tasks = await response.json();
+        list.innerHTML = tasks.map((task) => `<li>${task.title}</li>`).join("");
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await fetch("/api/tasks", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: title.value }),
+        });
+        title.value = "";
+        await loadTasks();
+      });
+
+      loadTasks();
+    </script>
+  </body>
+</html>
